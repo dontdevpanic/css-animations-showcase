@@ -128,3 +128,22 @@ function easeInOutCubic(t) {
         ? 4 * t * t * t
         : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
+
+// Hamburger
+function openNav() {
+    document.getElementById("myNav").classList.add("is-open");
+}
+
+function closeNav() {
+    document.getElementById("myNav").classList.remove("is-open");
+}
+
+const overlayLinks = Array.from(document.querySelectorAll("#myNav a[data-slide]"));
+
+overlayLinks.forEach((a, i) => {
+    a.addEventListener("click", (e) => {
+        e.preventDefault();
+        goToSlide(i);
+        closeNav();
+    });
+});
