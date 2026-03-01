@@ -1,3 +1,9 @@
+// ── Variablen (oben bei den anderen) ──
+// const palettes = [
+//     ["#e76f51", "#2a9d8f", "#e9c46a", "#264653", "#f4a261"],
+//     ["#8ecae6", "#219ebc", "#023047", "#ffb703", "#fb8500"],
+//     ["#d4e09b", "#f6f4d2", "#cbdfbd", "#f19c79", "#a44a3f"],
+// ];
 const palettes = [
     [
         { bg: "#e76f51", color: "#fff" },
@@ -28,6 +34,7 @@ const spyNav = document.getElementById("spy-nav");
 const dotNav = document.getElementById("dot-nav");
 const navLinks = Array.from(spyNav.querySelectorAll("a"));
 
+// ── Duplikate automatisch erzeugen ──
 const originals = Array.from(track.children);
 originals.forEach(slide => {
     const clone = slide.cloneNode(true);
@@ -44,6 +51,7 @@ const WHEEL_COOLDOWN = 800;
 
 track.style.transform = `translateY(0px)`;
 
+// ── Dot-Navigation aufbauen ──
 originals.forEach((_, i) => {
     const btn = document.createElement("button");
     btn.setAttribute("aria-label", `Slide ${i + 1}`);
@@ -53,22 +61,17 @@ originals.forEach((_, i) => {
 
 const dots = Array.from(dotNav.querySelectorAll("button"));
 
-// function updateSpy(index) {
-//     const realIndex = ((index % slideCount) + slideCount) % slideCount;
-//     navLinks.forEach((a, i) => a.classList.toggle("active", i === realIndex));
-//     dots.forEach((d, i) => d.classList.toggle("active", i === realIndex));
-// }
-
+// ── ScrollSpy updaten ──
 function updateSpy(index) {
     const realIndex = ((index % slideCount) + slideCount) % slideCount;
+
     navLinks.forEach((a, i) => a.classList.toggle("active", i === realIndex));
     dots.forEach((d, i) => d.classList.toggle("active", i === realIndex));
-    // ── Dot-Nav ausblenden auf Slide 1 ──
-    dotNav.classList.toggle("is-hidden", realIndex === 0);
 }
 
 updateSpy(0);
 
+// ── Navbar-Klick → Slide anspringen ──
 navLinks.forEach((a, i) => {
     a.addEventListener("click", (e) => {
         e.preventDefault();
@@ -76,37 +79,73 @@ navLinks.forEach((a, i) => {
     });
 });
 
+// ── Wheel ──
 window.addEventListener("wheel", (e) => {
     e.preventDefault();
     const now = Date.now();
     if (isAnimating || (now - lastWheelTime) < WHEEL_COOLDOWN) return;
     lastWheelTime = now;
+
     if (e.deltaY > 0) {
         currentIndex++;
     } else {
         currentIndex--;
     }
+
     animateToIndex(currentIndex);
 }, { passive: false });
 
+// ── Zu bestimmter Slide springen ──
 function goToSlide(targetIndex) {
     if (isAnimating) return;
+
+    // kürzesten Weg finden (vorwärts oder rückwärts)
     const diff = targetIndex - (((currentIndex % slideCount) + slideCount) % slideCount);
     if (diff === 0) return;
+
     currentIndex = currentIndex + diff;
     animateToIndex(currentIndex);
 }
 
-function applyPalette(paletteIndex) {
-    const palette = palettes[paletteIndex % palettes.length];
-    originals.forEach((slide, i) => {
-        track.children[i].style.background = palette[i].bg;
-        track.children[i].style.color = palette[i].color;
-        track.children[i + slideCount].style.background = palette[i].bg;
-        track.children[i + slideCount].style.color = palette[i].color;
-    });
-}
+// ── Animation ──
+// function animateToIndex(index) {
+//     isAnimating = true;
+//     updateSpy(index);
 
+// ── Farben vorab wechseln wenn Loop bevorsteht ──
+// if (index >= slideCount) {
+//     const nextPalette = palettes[(loopCount + 1) % palettes.length];
+//     originals.forEach((slide, i) => {
+//         track.children[i].style.background = nextPalette[i];
+//         track.children[i + slideCount].style.background = nextPalette[i];
+//     });
+// }
+
+//     const fromY = getCurrentTranslateY();
+//     const toY = -(index * slideHeight);
+//     const distance = toY - fromY;
+//     const duration = 700;
+//     let startTime = null;
+
+//     function step(timestamp) {
+//         if (!startTime) startTime = timestamp;
+//         const elapsed = timestamp - startTime;
+//         const progress = Math.min(elapsed / duration, 1);
+//         const eased = easeInOutCubic(progress);
+
+//         track.style.transform = `translateY(${fromY + distance * eased}px)`;
+
+//         if (progress < 1) {
+//             requestAnimationFrame(step);
+//         } else {
+//             loopReset();
+//             isAnimating = false;
+//             lastWheelTime = Date.now();
+//         }
+//     }
+
+//     requestAnimationFrame(step);
+// }
 function animateToIndex(index) {
     isAnimating = true;
     updateSpy(index);
@@ -116,6 +155,7 @@ function animateToIndex(index) {
     const distance = toY - fromY;
     const duration = 700;
     let startTime = null;
+    let colorChanged = false; // ← neu
 
     function step(timestamp) {
         if (!startTime) startTime = timestamp;
@@ -123,12 +163,22 @@ function animateToIndex(index) {
         const progress = Math.min(elapsed / duration, 1);
         const eased = easeInOutCubic(progress);
 
+        // ── bei 99% der Animation Duplikat-Slide 1 vorab einfärben ──
+        if (progress >= 0.99 && !colorChanged && index >= slideCount) {
+            colorChanged = true;
+            loopCount++;
+            const palette = palettes[loopCount % palettes.length];
+            // nur den Klon von Slide 1 (index slideCount) einfärben
+            track.children[slideCount].style.background = palette[0].bg;
+            track.children[slideCount].style.color = palette[0].color;
+        }
+
         track.style.transform = `translateY(${fromY + distance * eased}px)`;
 
         if (progress < 1) {
             requestAnimationFrame(step);
         } else {
-            loopReset();
+            loopReset(colorChanged); // ← Flag mitgeben
             isAnimating = false;
             lastWheelTime = Date.now();
         }
@@ -137,22 +187,52 @@ function animateToIndex(index) {
     requestAnimationFrame(step);
 }
 
-function loopReset() {
+function loopReset(alreadyCounted = false) {
     if (currentIndex >= slideCount) {
         currentIndex -= slideCount;
-        loopCount++;
-        applyPalette(loopCount);
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                track.style.transform = `translateY(${-(currentIndex * slideHeight)}px)`;
-            });
+
+        if (!alreadyCounted) loopCount++;
+        const palette = palettes[loopCount % palettes.length];
+        originals.forEach((slide, i) => {
+            track.children[i].style.background = palette[i].bg;
+            track.children[i].style.color = palette[i].color;
+            track.children[i + slideCount].style.background = palette[i].bg;
+            track.children[i + slideCount].style.color = palette[i].color;
         });
+
+        track.style.transform = `translateY(${-(currentIndex * slideHeight)}px)`;
     }
     if (currentIndex < 0) {
         currentIndex += slideCount;
         track.style.transform = `translateY(${-(currentIndex * slideHeight)}px)`;
     }
 }
+// function loopReset() {
+//     if (currentIndex >= slideCount) {
+//         currentIndex -= slideCount;
+
+//         requestAnimationFrame(() => {
+//             loopCount++;
+//             const palette = palettes[loopCount % palettes.length];
+// originals.forEach((slide, i) => {
+//     track.children[i].style.background = palette[i];
+//     track.children[i + slideCount].style.background = palette[i];
+// });
+//             originals.forEach((slide, i) => {
+//                 const { bg, color } = palette[i];
+//                 track.children[i].style.background = bg;
+//                 track.children[i].style.color = color;
+//                 track.children[i + slideCount].style.background = bg;
+//                 track.children[i + slideCount].style.color = color;
+//             });
+//             track.style.transform = `translateY(${-(currentIndex * slideHeight)}px)`;
+//         });
+//     }
+//     if (currentIndex < 0) {
+//         currentIndex += slideCount;
+//         track.style.transform = `translateY(${-(currentIndex * slideHeight)}px)`;
+//     }
+// }
 
 function getCurrentTranslateY() {
     const matrix = new DOMMatrix(window.getComputedStyle(track).transform);
@@ -165,6 +245,7 @@ function easeInOutCubic(t) {
         : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
+// Hamburger
 function openNav() {
     document.getElementById("myNav").classList.add("is-open");
 }
@@ -174,6 +255,7 @@ function closeNav() {
 }
 
 const overlayLinks = Array.from(document.querySelectorAll("#myNav a[data-slide]"));
+
 overlayLinks.forEach((a, i) => {
     a.addEventListener("click", (e) => {
         e.preventDefault();

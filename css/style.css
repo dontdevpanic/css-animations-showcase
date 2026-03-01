@@ -79,13 +79,17 @@ p {
     display: flex;
 }
 
-.display-none {
-    display: none;
+.text-center {
+    text-align: center;
 }
 
-.display-block {
+/* .display-none {
+    display: none;
+} */
+
+/* .display-block {
     display: block;
-}
+} */
 
 .opacity-muted {
     opacity: 0.5;
@@ -93,10 +97,10 @@ p {
 
 /* ==== Navbar ==== */
 
-nav {
+/* nav {
     display: flex;
     align-items: center;
-}
+} */
 
 .navbar {
     position: fixed;
@@ -118,6 +122,12 @@ nav {
     font-weight: bold;
     font-size: 1.1rem;
     letter-spacing: 0.05em;
+}
+
+.logo img {
+    width: 32px;
+    padding-right: 0.5rem;
+    transform: translateY(-2px);
 }
 
 .navbar ul {
@@ -151,10 +161,10 @@ nav {
     opacity: 1;
 }
 
-.navbar svg {
-    /* display: flex; */
+/* .navbar svg {
+    display: flex;
     width: 20px;
-}
+} */
 
 /* ==== ScrollSpy Dot-Navigation ==== */
 .dot-nav {
@@ -184,6 +194,18 @@ nav {
     transform: scale(1.4);
 }
 
+/* .dot-nav button:first-child.active~button,
+.dot-nav button:first-child.active {
+    opacity: 0;
+    pointer-events: none;
+} */
+
+.dot-nav.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
 /* ==== Loop ==== */
 .loop-wrapper {
     height: 100vh;
@@ -205,6 +227,7 @@ nav {
     /* font-size: 4rem;
     font-weight: bold; */
     flex-shrink: 0;
+    transition: background 0.3s ease;
 }
 
 /* slide-colors data-index */
@@ -227,6 +250,46 @@ nav {
 
 .loop-slide[data-index="4"] {
     background: #f4a261;
+}
+
+/* ==== SECTIONS ==== */
+
+/* Slide 1 */
+
+.ticker-wrap {
+    width: 100%;
+    overflow: hidden;
+}
+
+.ticker {
+    display: flex;
+    width: max-content;
+    white-space: nowrap;
+    animation: ticker 150s linear infinite;
+}
+
+.ticker-item {
+    font-family: var(--display-font);
+    font-size: clamp(4rem, 24vw, 24rem);
+    line-height: 1;
+    text-transform: uppercase;
+    padding-right: 2rem;
+    flex-shrink: 0;
+}
+
+.ticker-group {
+    display: flex;
+    flex-shrink: 0;
+}
+
+@keyframes ticker {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
 }
 
 /* ==== Footer ==== */
@@ -345,5 +408,11 @@ nav {
 
     .footer {
         flex-wrap: wrap;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .logo-text {
+        display: none;
     }
 }
