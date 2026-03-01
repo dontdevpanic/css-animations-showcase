@@ -9,8 +9,8 @@
 
       .cls-1, .cls-2 {
         fill: none;
-        stroke: #fff;
-        stroke-width: 2px;
+        stroke: currentColor;
+        stroke-width: 1.5px;
       }
 
       .cls-2 {

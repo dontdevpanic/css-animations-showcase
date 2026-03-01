@@ -53,21 +53,27 @@ originals.forEach((_, i) => {
 
 const dots = Array.from(dotNav.querySelectorAll("button"));
 
-// function updateSpy(index) {
-//     const realIndex = ((index % slideCount) + slideCount) % slideCount;
-//     navLinks.forEach((a, i) => a.classList.toggle("active", i === realIndex));
-//     dots.forEach((d, i) => d.classList.toggle("active", i === realIndex));
-// }
 
 function updateSpy(index) {
     const realIndex = ((index % slideCount) + slideCount) % slideCount;
     navLinks.forEach((a, i) => a.classList.toggle("active", i === realIndex));
     dots.forEach((d, i) => d.classList.toggle("active", i === realIndex));
-    // ── Dot-Nav ausblenden auf Slide 1 ──
     dotNav.classList.toggle("is-hidden", realIndex === 0);
+
+    document.querySelectorAll(".loop-slide").forEach((slide, i) => {
+        if (i === realIndex) {
+            // Animation neu starten: kurz entfernen, dann wieder setzen
+            slide.classList.remove("is-visible");
+            void slide.offsetWidth; // Browser zwingt Reflow
+            slide.classList.add("is-visible");
+        } else {
+            slide.classList.remove("is-visible");
+        }
+    });
 }
 
-updateSpy(0);
+// updateSpy(0);
+setTimeout(() => updateSpy(0), 100);
 
 navLinks.forEach((a, i) => {
     a.addEventListener("click", (e) => {

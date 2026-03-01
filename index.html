@@ -14,7 +14,7 @@
 
     <body>
 
-        <header class="navbar">
+        <header class="navbar space-between">
             <span class="logo flex">
                 <img src="img/loop-logo.svg" alt="Loop Logo Icon">
                 <span class="logo-text">DevPanic<span class="opacity-muted">Zone</span></span>
@@ -35,14 +35,61 @@
             <div class="loop-wrapper">
                 <div class="loop-track" id="track">
 
-                    <!-- <section id="slide-1" class="loop-slide" data-index="0">
-                        <div>
-                            <h1>Slide 1</h1>
-                            <p>1. Section</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                        </div>
-                    </section> -->
+                    <!-- SLIDE 1 -->
                     <section id="slide-1" class="loop-slide" data-index="0">
+                        <div class="flex flex-col">
+                            <div>
+                                <h1 class="visually-hidden">Vertical Fullscreen Endless Scrolling</h1>
+                                <div class="reveal-sequence" aria-hidden="true">
+                                    <span class="reveal-word">Vertical</span>
+                                    <span class="reveal-word">Fullscreen</span>
+                                    <span class="reveal-word">Endless</span>
+                                    <span class="reveal-word">Scrolling</span>
+                                    <span class="reveal-word reveal-word--final">Vertical Fullscreen<br>Endless
+                                        Scrolling</span>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <p>Slide 1</p>
+                                <a href="#slide-2" class="scroll-icon-link"
+                                    onclick="event.preventDefault(); goToSlide(1);">
+                                    <span class="scroll-icon-wrap">
+                                        <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 15.72 32" class="scroll-icon">
+                                            <defs>
+                                                <style>
+                                                    .cls-1 {
+                                                        stroke-linecap: round;
+                                                        stroke-linejoin: round;
+                                                    }
+
+                                                    .cls-1,
+                                                    .cls-2 {
+                                                        fill: none;
+                                                        stroke: currentColor;
+                                                        stroke-width: 1.5px;
+                                                    }
+
+                                                    .cls-2 {
+                                                        stroke-miterlimit: 10;
+                                                    }
+                                                </style>
+                                            </defs>
+                                            <rect class="cls-2" x="1.86" y="1.52" width="12" height="18.58" rx="6"
+                                                ry="6" />
+                                            <line class="cls-1" x1="7.86" y1="5.57" x2="7.86" y2="8.98" />
+                                            <polyline class="cls-1" points="11.28 27.1 7.86 30.52 4.45 27.1" />
+                                            <polyline class="cls-1" points="11.28 22.7 7.86 26.13 4.45 22.7" />
+                                        </svg>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- SLIDE 2 -->
+                    <section id="slide-2" class="loop-slide" data-index="1">
+                        <h2 class="visually-hidden">Vertical Fullscreen Endless Scrolling</h2>
                         <div class="ticker-wrap">
                             <div class="ticker">
                                 <div class="ticker-group">
@@ -56,23 +103,41 @@
                                     <span class="ticker-item">Vertical Fullscreen Endless Scrolling</span>
                                 </div>
                             </div>
+
                             <div class="text-center">
-                                <p>Slide 1</p>
+                                <p>Slide 2</p>
                                 <p>Vertical Fullscreen Endless Scrolling</p>
+                            </div>
+                    </section>
+
+                    <!-- SLIDE 3 -->
+                    <section id="slide-3" class="loop-slide" data-index="2">
+                        <h2 class="visually-hidden">Vertical Fullscreen Endless Scrolling</h2>
+                        <div class="flex flex-wrap flex-col">
+                            <div class="stagger-sequence" aria-hidden="true">
+                                <span class="stagger-item">Vertical</span>
+                                <span class="stagger-item">Fullscreen</span>
+                                <span class="stagger-item">Endless</span>
+                                <span class="stagger-item">Scrolling</span>
+                                <!-- <span class="stagger-item stagger-item--full">Vertical Fullscreen Endless Scrolling</span> -->
+                            </div>
+                            <div class="text-center">
+                                <p>Slide 3</p>
                             </div>
                         </div>
                     </section>
 
-                    <section id="slide-2" class="loop-slide" data-index="1">
-                        <h2>Slide 2</h2>
-                    </section>
-
-                    <section id="slide-3" class="loop-slide" data-index="2">
-                        <h2>Slide 3</h2>
-                    </section>
-
-                    <section id="slide-4" class="loop-slide" data-index="3">
+                    <!-- <section id="slide-4" class="loop-slide" data-index="3">
                         <h2>Slide 4</h2>
+                    </section> -->
+
+                    <!-- SLIDE 4 -->
+                    <section id="slide-4" class="loop-slide" data-index="3">
+                        <h2 class="visually-hidden">Vertical Fullscreen Endless Scrolling</h2>
+                        <div class="split-wrap" aria-hidden="true">
+                            <span class="split-left">Vertical<br>Endless</span>
+                            <span class="split-right">Fullscreen<br>Scrolling</span>
+                        </div>
                     </section>
 
                     <section id="slide-5" class="loop-slide" data-index="4">
