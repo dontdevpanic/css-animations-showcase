@@ -1,189 +1,198 @@
+// ══════════════════════════════════════════════
+//  CSS ANIMATIONS SHOWCASE — main.js
+//  DevPanicZone | vanilla JS, no dependencies
+// ══════════════════════════════════════════════
+
+// ── Paletten — wechseln pro Loop, alle Sections betroffen ──
 const palettes = [
-    [
-        { bg: "#e76f51", color: "#fff" },
-        { bg: "#2a9d8f", color: "#fff" },
-        { bg: "#e9c46a", color: "#222" },
-        { bg: "#264653", color: "#fff" },
-        { bg: "#f4a261", color: "#222" },
-    ],
-    [
-        { bg: "#8ecae6", color: "#023047" },
-        { bg: "#219ebc", color: "#fff" },
-        { bg: "#023047", color: "#8ecae6" },
-        { bg: "#ffb703", color: "#222" },
-        { bg: "#fb8500", color: "#fff" },
-    ],
-    [
-        { bg: "#d4e09b", color: "#333" },
-        { bg: "#f6f4d2", color: "#333" },
-        { bg: "#cbdfbd", color: "#333" },
-        { bg: "#f19c79", color: "#fff" },
-        { bg: "#a44a3f", color: "#fff" },
-    ],
+    {
+        hero: { bg: "#3d1f0d", color: "#f2e9d0" },
+        sectionDark: { bg: "#3d1f0d", color: "#f2e9d0" },
+        sectionMid: { bg: "#2a1208", color: "#f2e9d0" },
+        sectionAccent: { bg: "#c8a96e", color: "#3d1f0d" },
+        inlineNav: { bg: "#1a0c05", color: "#f2e9d0" },
+    },
+    {
+        hero: { bg: "#f2e9d0", color: "#3d1f0d" },
+        sectionDark: { bg: "#e8dfc4", color: "#3d1f0d" },
+        sectionMid: { bg: "#d4c9a8", color: "#3d1f0d" },
+        sectionAccent: { bg: "#3d1f0d", color: "#f2e9d0" },
+        inlineNav: { bg: "#c8bfa4", color: "#3d1f0d" },
+    },
+    {
+        hero: { bg: "#c8a96e", color: "#3d1f0d" },
+        sectionDark: { bg: "#b8955a", color: "#f2e9d0" },
+        sectionMid: { bg: "#3d1f0d", color: "#c8a96e" },
+        sectionAccent: { bg: "#f2e9d0", color: "#3d1f0d" },
+        inlineNav: { bg: "#9c7a42", color: "#f2e9d0" },
+    },
 ];
+
 let loopCount = 0;
 
-const track = document.getElementById("track");
-const spyNav = document.getElementById("spy-nav");
-const dotNav = document.getElementById("dot-nav");
-const navLinks = Array.from(spyNav.querySelectorAll("a"));
+// ── DOM-Referenzen ──
+const main = document.getElementById("main-content");
+const intro = document.getElementById("intro");
 
-const originals = Array.from(track.children);
-originals.forEach(slide => {
-    const clone = slide.cloneNode(true);
-    track.appendChild(clone);
-});
+// ── INTRO ──
+document.body.classList.add("intro-active");
 
-const slideHeight = window.innerHeight;
-const slideCount = originals.length;
+if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    intro.style.display = "none";
+    document.body.classList.remove("intro-active");
+} else {
+    const INTRO_DURATION = 2900;
 
-let currentIndex = 0;
-let isAnimating = false;
-let lastWheelTime = 0;
-const WHEEL_COOLDOWN = 800;
-
-track.style.transform = `translateY(0px)`;
-
-originals.forEach((_, i) => {
-    const btn = document.createElement("button");
-    btn.setAttribute("aria-label", `Slide ${i + 1}`);
-    btn.addEventListener("click", () => goToSlide(i));
-    dotNav.appendChild(btn);
-});
-
-const dots = Array.from(dotNav.querySelectorAll("button"));
-
-
-function updateSpy(index) {
-    const realIndex = ((index % slideCount) + slideCount) % slideCount;
-    navLinks.forEach((a, i) => a.classList.toggle("active", i === realIndex));
-    dots.forEach((d, i) => d.classList.toggle("active", i === realIndex));
-    dotNav.classList.toggle("is-hidden", realIndex === 0);
-
-    document.querySelectorAll(".loop-slide").forEach((slide, i) => {
-        if (i === realIndex) {
-            // Animation neu starten: kurz entfernen, dann wieder setzen
-            slide.classList.remove("is-visible");
-            void slide.offsetWidth; // Browser zwingt Reflow
-            slide.classList.add("is-visible");
-        } else {
-            slide.classList.remove("is-visible");
-        }
-    });
+    setTimeout(() => {
+        intro.classList.add("intro--exit");
+        intro.addEventListener("animationend", () => {
+            intro.style.display = "none";
+            document.body.classList.remove("intro-active");
+        }, { once: true });
+    }, INTRO_DURATION);
 }
 
-// updateSpy(0);
-setTimeout(() => updateSpy(0), 100);
+// ══════════════════════════════════════════════
+//  ENDLESS LOOP — Pre-Klon + Post-Klon
+//
+//  Stack im DOM:
+//  [ pre-clone ]   ← eingefügt vor den Originals
+//  [ originals ]   ← der echte Inhalt
+//  [ post-clone ]  ← angehängt nach den Originals
+//
+//  Scroll startet bei originalHeight (zeigt Originals)
+//  Reset nach oben:  scrollY < originalHeight        → + originalHeight
+//  Reset nach unten: scrollY >= 2 × originalHeight   → - originalHeight
+// ══════════════════════════════════════════════
 
-navLinks.forEach((a, i) => {
-    a.addEventListener("click", (e) => {
-        e.preventDefault();
-        goToSlide(i);
-    });
+const originals = Array.from(main.children);
+
+// Post-Klon (nach unten scrollen)
+originals.forEach(el => {
+    const clone = el.cloneNode(true);
+    clone.classList.add("is-clone", "is-clone--post");
+    main.appendChild(clone);
 });
 
-window.addEventListener("wheel", (e) => {
-    e.preventDefault();
-    const now = Date.now();
-    if (isAnimating || (now - lastWheelTime) < WHEEL_COOLDOWN) return;
-    lastWheelTime = now;
-    if (e.deltaY > 0) {
-        currentIndex++;
-    } else {
-        currentIndex--;
+// Pre-Klon (nach oben scrollen)
+originals.forEach(el => {
+    const clone = el.cloneNode(true);
+    clone.classList.add("is-clone", "is-clone--pre");
+    main.insertBefore(clone, main.firstChild);
+});
+
+// Hilfsfunktion: Gesamthöhe der Original-Elemente
+function getOriginalHeight() {
+    let h = 0;
+    originals.forEach(el => { h += el.offsetHeight; });
+    return h;
+}
+
+// Scroll-Startposition: mitten im Stack (zeigt Originals)
+// Nach dem DOM-Insert warten bis Layout berechnet ist
+window.addEventListener("load", () => {
+    const h = getOriginalHeight();
+    window.scrollTo({ top: h, behavior: "instant" });
+});
+
+// Scroll-Reset in beide Richtungen
+let isResetting = false;
+
+window.addEventListener("scroll", () => {
+    if (isResetting) return;
+    const h = getOriginalHeight();
+
+    if (window.scrollY < h) {
+        // Obere Grenze erreicht → nach unten springen
+        isResetting = true;
+        window.scrollTo({ top: window.scrollY + h, behavior: "instant" });
+        isResetting = false;
+    } else if (window.scrollY >= h * 2) {
+        // Untere Grenze erreicht → nach oben springen
+        isResetting = true;
+        window.scrollTo({ top: window.scrollY - h, behavior: "instant" });
+        isResetting = false;
     }
-    animateToIndex(currentIndex);
-}, { passive: false });
+}, { passive: true });
 
-function goToSlide(targetIndex) {
-    if (isAnimating) return;
-    const diff = targetIndex - (((currentIndex % slideCount) + slideCount) % slideCount);
-    if (diff === 0) return;
-    currentIndex = currentIndex + diff;
-    animateToIndex(currentIndex);
-}
+// ══════════════════════════════════════════════
+//  FARBWECHSEL — wenn Hero sichtbar wird
+// ══════════════════════════════════════════════
 
-function applyPalette(paletteIndex) {
-    const palette = palettes[paletteIndex % palettes.length];
-    originals.forEach((slide, i) => {
-        track.children[i].style.background = palette[i].bg;
-        track.children[i].style.color = palette[i].color;
-        track.children[i + slideCount].style.background = palette[i].bg;
-        track.children[i + slideCount].style.color = palette[i].color;
+function applyPalette(index) {
+    const p = palettes[index % palettes.length];
+
+    document.querySelectorAll(".hero").forEach(el => {
+        el.style.background = p.hero.bg;
+        el.style.color = p.hero.color;
+    });
+    document.querySelectorAll(".section--dark").forEach(el => {
+        el.style.background = p.sectionDark.bg;
+        el.style.color = p.sectionDark.color;
+    });
+    document.querySelectorAll(".section--mid").forEach(el => {
+        el.style.background = p.sectionMid.bg;
+        el.style.color = p.sectionMid.color;
+    });
+    document.querySelectorAll(".section--accent").forEach(el => {
+        el.style.background = p.sectionAccent.bg;
+        el.style.color = p.sectionAccent.color;
+    });
+    document.querySelectorAll(".inline-nav").forEach(el => {
+        el.style.background = p.inlineNav.bg;
+    });
+    document.querySelectorAll(".inline-nav a").forEach(el => {
+        el.style.color = p.inlineNav.color;
     });
 }
 
-function animateToIndex(index) {
-    isAnimating = true;
-    updateSpy(index);
+applyPalette(0);
 
-    const fromY = getCurrentTranslateY();
-    const toY = -(index * slideHeight);
-    const distance = toY - fromY;
-    const duration = 700;
-    let startTime = null;
+// Hero-Observer: beim ersten Erscheinen ignorieren,
+// danach bei jedem Hero-Eintritt Palette wechseln
+let heroVisitCount = 0;
 
-    function step(timestamp) {
-        if (!startTime) startTime = timestamp;
-        const elapsed = timestamp - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = easeInOutCubic(progress);
-
-        track.style.transform = `translateY(${fromY + distance * eased}px)`;
-
-        if (progress < 1) {
-            requestAnimationFrame(step);
-        } else {
-            loopReset();
-            isAnimating = false;
-            lastWheelTime = Date.now();
-        }
-    }
-
-    requestAnimationFrame(step);
-}
-
-function loopReset() {
-    if (currentIndex >= slideCount) {
-        currentIndex -= slideCount;
+const heroObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        heroVisitCount++;
+        if (heroVisitCount === 1) return; // Startpalette, kein Wechsel
         loopCount++;
         applyPalette(loopCount);
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                track.style.transform = `translateY(${-(currentIndex * slideHeight)}px)`;
-            });
-        });
-    }
-    if (currentIndex < 0) {
-        currentIndex += slideCount;
-        track.style.transform = `translateY(${-(currentIndex * slideHeight)}px)`;
-    }
-}
-
-function getCurrentTranslateY() {
-    const matrix = new DOMMatrix(window.getComputedStyle(track).transform);
-    return matrix.m42;
-}
-
-function easeInOutCubic(t) {
-    return t < 0.5
-        ? 4 * t * t * t
-        : 1 - Math.pow(-2 * t + 2, 3) / 2;
-}
-
-function openNav() {
-    document.getElementById("myNav").classList.add("is-open");
-}
-
-function closeNav() {
-    document.getElementById("myNav").classList.remove("is-open");
-}
-
-const overlayLinks = Array.from(document.querySelectorAll("#myNav a[data-slide]"));
-overlayLinks.forEach((a, i) => {
-    a.addEventListener("click", (e) => {
-        e.preventDefault();
-        goToSlide(i);
-        closeNav();
     });
+}, { threshold: 0.4 });
+
+document.querySelectorAll(".hero").forEach(el => heroObserver.observe(el));
+
+// ══════════════════════════════════════════════
+//  SCROLL-ANIMATIONEN
+// ══════════════════════════════════════════════
+
+const animatedSelectors = [
+    ".reveal",
+    ".stagger-item",
+    ".slide-in-left",
+    ".slide-in-right",
+    ".typewriter",
+].join(", ");
+
+const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        const el = entry.target;
+        const isClone = el.closest(".is-clone") !== null;
+
+        if (entry.isIntersecting) {
+            el.classList.add("is-visible");
+            if (!isClone) {
+                scrollObserver.unobserve(el);
+            }
+        } else if (isClone) {
+            // Klon zurücksetzen → Animation spielt beim nächsten Loop wieder
+            el.classList.remove("is-visible");
+        }
+    });
+}, { threshold: 0.15 });
+
+document.querySelectorAll(animatedSelectors).forEach(el => {
+    scrollObserver.observe(el);
 });

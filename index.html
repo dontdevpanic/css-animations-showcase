@@ -4,202 +4,176 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Endless Vertical Loop</title>
-        <meta name="description" content="Endless Full Height Loop mit Section Scrolling">
+        <title>CSS Animations Showcase – DevPanicZone</title>
+        <meta name="description" content="CSS Animations Showcase – Endless Section Loop">
         <meta name="author" content="Bianca | DontDevPanic">
-        <link rel="icon" type="image/x-icon" href="img/loop-logo.svg">
         <meta name="robots" content="index, follow">
         <link rel="stylesheet" href="css/style.css">
     </head>
 
     <body>
 
-        <header class="navbar space-between">
-            <span class="logo flex">
-                <img src="img/loop-logo.svg" alt="Loop Logo Icon">
-                <span class="logo-text">DevPanic<span class="opacity-muted">Zone</span></span>
-            </span>
-            <nav id="spy-nav" aria-label="Seitennavigation">
-                <ul role="list">
-                    <li><a href="#slide-1" data-slide="0">Slide 1</a></li>
-                    <li><a href="#slide-2" data-slide="1">Slide 2</a></li>
-                    <li><a href="#slide-3" data-slide="2">Slide 3</a></li>
-                    <li><a href="#slide-4" data-slide="3">Slide 4</a></li>
-                    <li><a href="#slide-5" data-slide="4">Slide 5</a></li>
-                </ul>
-                <button aria-label="Menü öffnen" onclick="openNav()" class="hamburger">☰</button>
-            </nav>
-        </header>
-
-        <main>
-            <div class="loop-wrapper">
-                <div class="loop-track" id="track">
-
-                    <!-- SLIDE 1 -->
-                    <section id="slide-1" class="loop-slide" data-index="0">
-                        <div class="flex flex-col">
-                            <div>
-                                <h1 class="visually-hidden">Vertical Fullscreen Endless Scrolling</h1>
-                                <div class="reveal-sequence" aria-hidden="true">
-                                    <span class="reveal-word">Vertical</span>
-                                    <span class="reveal-word">Fullscreen</span>
-                                    <span class="reveal-word">Endless</span>
-                                    <span class="reveal-word">Scrolling</span>
-                                    <span class="reveal-word reveal-word--final">Vertical Fullscreen<br>Endless
-                                        Scrolling</span>
-                                </div>
-                            </div>
-                            <div class="text-center">
-                                <p>Slide 1</p>
-                                <a href="#slide-2" class="scroll-icon-link"
-                                    onclick="event.preventDefault(); goToSlide(1);">
-                                    <span class="scroll-icon-wrap">
-                                        <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 15.72 32" class="scroll-icon">
-                                            <defs>
-                                                <style>
-                                                    .cls-1 {
-                                                        stroke-linecap: round;
-                                                        stroke-linejoin: round;
-                                                    }
-
-                                                    .cls-1,
-                                                    .cls-2 {
-                                                        fill: none;
-                                                        stroke: currentColor;
-                                                        stroke-width: 1.5px;
-                                                    }
-
-                                                    .cls-2 {
-                                                        stroke-miterlimit: 10;
-                                                    }
-                                                </style>
-                                            </defs>
-                                            <rect class="cls-2" x="1.86" y="1.52" width="12" height="18.58" rx="6"
-                                                ry="6" />
-                                            <line class="cls-1" x1="7.86" y1="5.57" x2="7.86" y2="8.98" />
-                                            <polyline class="cls-1" points="11.28 27.1 7.86 30.52 4.45 27.1" />
-                                            <polyline class="cls-1" points="11.28 22.7 7.86 26.13 4.45 22.7" />
-                                        </svg>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- SLIDE 2 -->
-                    <section id="slide-2" class="loop-slide" data-index="1">
-                        <h2 class="visually-hidden">Vertical Fullscreen Endless Scrolling</h2>
-                        <div class="ticker-wrap">
-                            <div class="ticker">
-                                <div class="ticker-group">
-                                    <span class="ticker-item">Vertical Fullscreen Endless Scrolling</span>
-                                    <span class="ticker-item">Vertical Fullscreen Endless Scrolling</span>
-                                    <span class="ticker-item">Vertical Fullscreen Endless Scrolling</span>
-                                </div>
-                                <div class="ticker-group">
-                                    <span class="ticker-item">Vertical Fullscreen Endless Scrolling</span>
-                                    <span class="ticker-item">Vertical Fullscreen Endless Scrolling</span>
-                                    <span class="ticker-item">Vertical Fullscreen Endless Scrolling</span>
-                                </div>
-                            </div>
-
-                            <div class="text-center">
-                                <p>Slide 2</p>
-                                <p>Vertical Fullscreen Endless Scrolling</p>
-                            </div>
-                    </section>
-
-                    <!-- SLIDE 3 -->
-                    <section id="slide-3" class="loop-slide" data-index="2">
-                        <h2 class="visually-hidden">Vertical Fullscreen Endless Scrolling</h2>
-                        <div class="flex flex-wrap flex-col">
-                            <div class="stagger-sequence" aria-hidden="true">
-                                <span class="stagger-item">Vertical</span>
-                                <span class="stagger-item">Fullscreen</span>
-                                <span class="stagger-item">Endless</span>
-                                <span class="stagger-item">Scrolling</span>
-                                <!-- <span class="stagger-item stagger-item--full">Vertical Fullscreen Endless Scrolling</span> -->
-                            </div>
-                            <div class="text-center">
-                                <p>Slide 3</p>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- <section id="slide-4" class="loop-slide" data-index="3">
-                        <h2>Slide 4</h2>
-                    </section> -->
-
-                    <!-- SLIDE 4 -->
-                    <!-- <section id="slide-4" class="loop-slide" data-index="3">
-                        <h2 class="visually-hidden">Vertical Fullscreen Endless Scrolling</h2>
-                        <div class="split-wrap" aria-hidden="true">
-                            <span class="split-left">Vertical<br>Endless</span>
-                            <span class="split-right">Fullscreen<br>Scrolling</span>
-                        </div>
-                    </section> -->
-
-                    <!-- SLIDE 4 -->
-                    <section id="slide-4" class="loop-slide" data-index="3">
-                        <h2 class="visually-hidden">Vertical Fullscreen Endless Scrolling</h2>
-                        <div class="flex flex-wrap flex-col">
-                            <div class="slide-in-wrap" aria-hidden="true">
-                                <span class="slide-in-left">Vertical</span>
-                                <span class="slide-in-right">Fullscreen</span>
-                                <span class="slide-in-left">Endless</span>
-                                <span class="slide-in-right">Scrolling</span>
-                            </div>
-                            <div>
-                                <p>Slide 4</p>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- <section id="slide-5" class="loop-slide" data-index="4">
-                        <h2>Slide 5</h2>
-                    </section> -->
-
-                    <section id="slide-5" class="loop-slide" data-index="4">
-                        <h2 class="visually-hidden">Vertical Fullscreen Endless Scrolling</h2>
-                        <div class="flex flex-col align-items-center">
-                            <div class="flex flex-col" aria-hidden="true">
-                                <p class="typewriter tw-1">Vertical Fullscreen</p>
-                                <p class="typewriter tw-2">Endless Scrolling</p>
-                            </div>
-                            <div>
-                                <p>Slide 5</p>
-                            </div>
-                        </div>
-                    </section>
-
-                </div>
-            </div>
-
-
-            <!-- Dot-Navigation -->
-            <nav class="dot-nav" id="dot-nav" aria-label="Punkt-Navigation"></nav>
-        </main>
-
-        <!-- Overlay außerhalb von main und loop-wrapper! -->
-        <div id="myNav" class="overlay">
-            <div class="overlay-content">
-                <button class="close-btn" onclick="closeNav()">✕</button>
-                <ul>
-                    <li><a href="#slide-1" data-slide="0">Slide 1</a></li>
-                    <li><a href="#slide-2" data-slide="1">Slide 2</a></li>
-                    <li><a href="#slide-3" data-slide="2">Slide 3</a></li>
-                    <li><a href="#slide-4" data-slide="3">Slide 4</a></li>
-                    <li><a href="#slide-5" data-slide="4">Slide 5</a></li>
-                </ul>
+        <!-- ═══════════════════════════════════════
+         INTRO  (fixed overlay, fades up on complete)
+    ═══════════════════════════════════════ -->
+        <div id="intro" aria-hidden="true">
+            <div class="reveal-sequence intro-sequence">
+                <span class="reveal-word">Kaffee</span>
+                <span class="reveal-word">Rösten</span>
+                <span class="reveal-word">Genießen</span>
+                <span class="reveal-word">Wiederholen</span>
             </div>
         </div>
 
+        <!-- ═══════════════════════════════════════
+         MAIN CONTENT
+    ═══════════════════════════════════════ -->
+        <main id="main-content">
+
+            <!-- HERO — 100vh, endless loop anchor -->
+            <section id="hero" class="hero">
+                <h1 class="visually-hidden">Schwarzgrund Kaffeerösterei</h1>
+
+                <span class="hero-brand" aria-hidden="true">Schwarzgrund</span>
+
+                <div class="hero-center">
+                    <svg class="hero-svg" viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                        focusable="false">
+                        <ellipse cx="60" cy="90" rx="38" ry="56" fill="none" stroke="currentColor" stroke-width="2.5" />
+                        <path d="M60 36 C40 60 40 120 60 144" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" />
+                        <line class="steam" x1="60" y1="28" x2="60" y2="14" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" />
+                        <line class="steam steam--2" x1="50" y1="26" x2="45" y2="12" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" />
+                        <line class="steam steam--3" x1="70" y1="26" x2="75" y2="12" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    <p class="hero-tagline">Handröstung seit 1987</p>
+                </div>
+            </section>
+
+            <!-- ─── SECTION: ÜBER UNS ─── -->
+            <section id="ueber-uns" class="section section--dark">
+                <div class="section-inner">
+                    <h2 class="reveal">Über uns</h2>
+                    <p class="reveal body-text">
+                        Wir rösten kleine Mengen, mit viel Zeit und noch mehr Geduld.
+                        Jede Bohne reist weit, bevor sie ihren Weg in deine Tasse findet.
+                        Schwarzgrund — Kaffee ohne Kompromisse.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ─── INLINE NAV ─── -->
+            <nav class="inline-nav" aria-label="Seitennavigation">
+                <a href="#herkunft">Herkunft</a>
+                <a href="#roestungen">Röstungen</a>
+                <a href="#besuch">Besuch</a>
+                <a href="#karte">Karte</a>
+            </nav>
+
+            <!-- ─── SECTION: HERKUNFT (Ticker) ─── -->
+            <section id="herkunft" class="section section--accent">
+                <div class="ticker-wrap" aria-hidden="true">
+                    <div class="ticker">
+                        <div class="ticker-group">
+                            <span class="ticker-item">Äthiopien</span>
+                            <span class="ticker-item sep">·</span>
+                            <span class="ticker-item">Kolumbien</span>
+                            <span class="ticker-item sep">·</span>
+                            <span class="ticker-item">Sumatra</span>
+                            <span class="ticker-item sep">·</span>
+                            <span class="ticker-item">Guatemala</span>
+                            <span class="ticker-item sep">·</span>
+                        </div>
+                        <div class="ticker-group" aria-hidden="true">
+                            <span class="ticker-item">Äthiopien</span>
+                            <span class="ticker-item sep">·</span>
+                            <span class="ticker-item">Kolumbien</span>
+                            <span class="ticker-item sep">·</span>
+                            <span class="ticker-item">Sumatra</span>
+                            <span class="ticker-item sep">·</span>
+                            <span class="ticker-item">Guatemala</span>
+                            <span class="ticker-item sep">·</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="visually-hidden">Äthiopien, Kolumbien, Sumatra, Guatemala</p>
+                <div class="section-inner section-inner--pad-top">
+                    <p class="reveal body-text">
+                        Unsere Bohnen kommen direkt von Kleinbauern. Kein Zwischenhändler,
+                        keine langen Lieferketten — nur ehrlicher Kaffee mit Geschichte.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ─── SECTION: RÖSTUNGEN (Stagger words) ─── -->
+            <section id="roestungen" class="section section--mid">
+                <div class="section-inner">
+                    <div class="stagger-sequence" aria-hidden="true">
+                        <span class="stagger-item">Hell.</span>
+                        <span class="stagger-item">Mittel.</span>
+                        <span class="stagger-item">Dunkel.</span>
+                        <span class="stagger-item">Espresso.</span>
+                    </div>
+                    <p class="visually-hidden">Hell, Mittel, Dunkel, Espresso</p>
+                    <p class="reveal body-text body-text--center">
+                        Vier Röstgrade. Jeder ein eigener Charakter.
+                        Von blumig-fruchtig bis tief und schokoladig.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ─── SECTION: BESUCH (Slide-in) ─── -->
+            <section id="besuch" class="section section--dark section--overflow-hidden">
+                <div class="section-inner">
+                    <div class="slide-in-wrap" aria-hidden="true">
+                        <span class="slide-in-left">Komm</span>
+                        <span class="slide-in-right">vorbei.</span>
+                        <span class="slide-in-left">Rieche</span>
+                        <span class="slide-in-right">es selbst.</span>
+                    </div>
+                    <p class="visually-hidden">Komm vorbei. Rieche es selbst.</p>
+                    <p class="reveal body-text">
+                        Unser Röstraum ist offen für Besuche — jeden Samstag zwischen 10 und 14 Uhr.
+                        Kaffee aus der Röstpfanne, frisch und unverpackt.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ─── INLINE NAV ─── -->
+            <nav class="inline-nav" aria-label="Seitennavigation">
+                <a href="#hero">Start</a>
+                <a href="#ueber-uns">Über uns</a>
+                <a href="#herkunft">Herkunft</a>
+                <a href="#roestungen">Röstungen</a>
+            </nav>
+
+            <!-- ─── SECTION: KARTE (Typewriter) ─── -->
+            <section id="karte" class="section section--mid">
+                <div class="section-inner">
+                    <div class="typewriter-wrap" aria-hidden="true">
+                        <span class="typewriter tw-1">Espresso</span>
+                        <span class="typewriter tw-2">Filterkaffee</span>
+                        <span class="typewriter tw-3">Cold Brew</span>
+                    </div>
+                    <p class="visually-hidden">Espresso, Filterkaffee, Cold Brew</p>
+                    <p class="reveal body-text body-text--center">
+                        Unsere Hauskarte — schlicht, saisonal, aus eigener Röstung.
+                    </p>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- ═══════════════════════════════════════
+         FOOTER — fixed, always on top
+    ═══════════════════════════════════════ -->
         <footer class="footer">
-            <nav class="flex flex-wrap gap-1">
-                <a href="https://github.com/dontdevpanic">Gitub Profile</a>
-                <a href="#">Gitub Repo</a>
-                <!-- <a href="#">© 2026 DevPanicZone</a> -->
+            <nav class="footer-nav" aria-label="Footer-Navigation">
+                <a href="https://github.com/dontdevpanic" target="_blank" rel="noopener">GitHub Profil</a>
+                <a href="#" target="_blank" rel="noopener">GitHub Repo</a>
             </nav>
         </footer>
 
