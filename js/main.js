@@ -21,6 +21,18 @@ const palettes = [
         { bg: "#a44a3f", color: "#fff" },
     ],
 ];
+
+// ==== Fix iOS Safari 100vh ====
+function setRealVH() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+setRealVH();
+window.addEventListener('resize', setRealVH);
+window.addEventListener('orientationchange', setRealVH);
+
+
 let loopCount = 0;
 
 const track = document.getElementById("track");
@@ -34,7 +46,7 @@ originals.forEach(slide => {
     track.appendChild(clone);
 });
 
-const slideHeight = window.innerHeight;
+let slideHeight = window.innerHeight;
 const slideCount = originals.length;
 
 let currentIndex = 0;
@@ -62,9 +74,9 @@ function updateSpy(index) {
 
     document.querySelectorAll(".loop-slide").forEach((slide, i) => {
         if (i === realIndex) {
-            // Animation neu starten: kurz entfernen, dann wieder setzen
+            // Restart animation: set off and on
             slide.classList.remove("is-visible");
-            void slide.offsetWidth; // Browser zwingt Reflow
+            void slide.offsetWidth; // Browser forces reflow
             slide.classList.add("is-visible");
         } else {
             slide.classList.remove("is-visible");
@@ -187,3 +199,32 @@ overlayLinks.forEach((a, i) => {
         closeNav();
     });
 });
+
+// ==== Resize ====
+window.addEventListener("resize", () => {
+    slideHeight = window.innerHeight;
+    track.style.transform = `translateY(${-(currentIndex * slideHeight)}px)`;
+});
+
+// ==== Touch ====
+let touchStartY = 0;
+
+window.addEventListener("touchstart", (e) => {
+    touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+window.addEventListener("touchend", (e) => {
+    const now = Date.now();
+    if (isAnimating || (now - lastWheelTime) < WHEEL_COOLDOWN) return;
+
+    const diff = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(diff) < 50) return;
+
+    lastWheelTime = now;
+    if (diff > 0) {
+        currentIndex++;
+    } else {
+        currentIndex--;
+    }
+    animateToIndex(currentIndex);
+}, { passive: true });

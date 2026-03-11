@@ -240,7 +240,9 @@ p {
 
 /* ==== Loop ==== */
 .loop-wrapper {
-    height: 100vh;
+    /* height: 100vh; */
+    /* Safari fix */
+    height: calc(var(--vh, 1vh) * 100);
     overflow: hidden;
     position: relative;
 }
@@ -252,7 +254,9 @@ p {
 }
 
 .loop-slide {
-    height: 100vh;
+    /* height: 100vh; */
+    /* Safari fix */
+    height: calc(var(--vh, 1vh) * 100);
     display: flex;
     align-items: center;
     justify-content: center;
